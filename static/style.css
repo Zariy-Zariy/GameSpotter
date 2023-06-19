@@ -1,0 +1,10 @@
+body {
+    background-color: #212027;
+    color: white;
+    text-align: center;
+    margin: 20px 10px 20px 10px;
+}
+
+.navbar{
+    border-radius: 10px;
+}
