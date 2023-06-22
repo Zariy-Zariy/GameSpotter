@@ -58,8 +58,9 @@ def connect():
 @app.route("/")
 @login_required
 def home():
-    #TODO
-    return render_template("home.html")
+    # Get the list of games owned by the user
+    user_library = cur.execute("SELECT games.* FROM games JOIN user_library ON user_library.game_id = games.id WHERE user_library.user_id = ?", [session["steam_id"]])
+    return render_template("home.html", user_library = user_library)
 
 @app.route("/refresh")
 def refresh():
@@ -82,8 +83,10 @@ def refresh():
 
             cur.execute("INSERT INTO games(id,name,img,review) VALUES(?,?,?,?)",
                         [game["appid"], game_info["name"], game_info["header_image"], game_info["metacritic"]["score"]])
-            #TODO: Link the genres
             db.commit()
+            # Link the genre
+            for genre in game_info["genres"]:
+                print(genre["description"])
 
 
         # Link the game to the user
@@ -97,3 +100,9 @@ def refresh():
             db.commit()
 
     return redirect("/")
+
+def add_genre(genre_name, game_id):
+    print(genre_name)
+
+def add_game(game_name, user_id):
+    print(user_id)
