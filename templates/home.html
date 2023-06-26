@@ -6,7 +6,15 @@
     <h1>Your games</h1>
     <hr>
     <div class="games">
-
+    {%for game in user_library%}
+        <div class="game">
+            <img class="game-image" src="{{game[2]}}">
+            <p class="game-title">{{game[0]}}</p>
+            {%if game[3] != None%}
+                <p class="game-score">{{game[3]}} / 100</p>
+            {%endif%}
+        </div>
+    {%endfor%}
     </div>
 
 {%endblock%}

@@ -2,9 +2,70 @@ body {
     background-color: #212027;
     color: white;
     text-align: center;
-    margin: 20px 10px 20px 10px;
+    margin: 20px 5px 20px 5px;
 }
 
 .navbar{
     border-radius: 10px;
+}
+
+.games{
+    display: grid;
+    justify-content: space-evenly;
+    width: 100vw;
+    grid-template-columns: auto auto auto auto;
+}
+
+
+.game{
+    transition: 0.4s;
+    width: 24vw;
+    border-radius: 10px;
+}
+
+.game:hover{
+    background-image: linear-gradient(to bottom right, #212027, #474554, #212027);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+
+    width: 27vw;
+}
+
+.game-image{
+    border-radius: 5px;
+    width: 100%;
+}
+
+.game-title{
+    width: 13vw;
+    margin-left: 20px;
+
+    text-align: left;
+    font-weight: bold;
+    font-size: 30px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.game-score{
+    text-align: center;
+    position: relative;
+    left: 7vw;
+    top: -50px;
+}
+
+/* For mobile devices */
+@media only screen and (max-width: 800px) {
+    .games{
+        grid-template-columns: 100vw;
+    }
+    .game{
+        width: 80%;
+    }
+
+    .game:hover{
+        width: 90%;
+    }
 }

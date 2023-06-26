@@ -60,6 +60,7 @@ def connect():
 def home():
     # Get the list of games owned by the user
     user_library = cur.execute("SELECT games.* FROM games JOIN user_library ON user_library.game_id = games.id WHERE user_library.user_id = ?", [session["steam_id"]])
+    user_library = user_library.fetchall()
     return render_template("home.html", user_library = user_library)
 
 @app.route("/refresh")
