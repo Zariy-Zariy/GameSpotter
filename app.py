@@ -64,6 +64,7 @@ def home():
     return render_template("home.html", user_library = user_library)
 
 @app.route("/refresh")
+@login_required
 def refresh():
     # Get all the games
     response = requests.get(f"https://api.steampowered.com/IPlayerService/GetOwnedGames/v1?include_appinfo=true&include_played_free_games=true&steamid={session['steam_id']}&key={constant.STEAM_KEY}")
@@ -102,8 +103,9 @@ def refresh():
 
     return redirect("/")
 
-def add_genre(genre_name, game_id):
-    print(genre_name)
 
-def add_game(game_name, user_id):
-    print(user_id)
+@app.route("/quiz")
+@login_required
+def quiz():
+    
+    return render_template(None)
