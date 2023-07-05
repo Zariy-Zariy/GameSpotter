@@ -1,8 +1,15 @@
-body {
+/* Import Google font*/
+@import url('https://fonts.googleapis.com/css2?family=Anton&display=swap');
+* {
+    background: #000 !important;
+    color: #0f0 !important;
+    outline: solid #f00 1px !important;
+}
+
+html, body {
     background-color: #212027;
     color: white;
     text-align: center;
-    overflow-x: hidden;
 }
 
 .navbar{
@@ -52,7 +59,8 @@ body {
 .game-score{
     text-align: center;
     position: relative;
-    left: 30%;
+    width: 60px;
+    left: 70%;
     top: -19%;
 }
 
@@ -92,4 +100,62 @@ body {
 
 .steam-icon{
     height: 20px;
+}
+
+.question{
+    width: 100vw;
+    height: 95vh;
+}
+
+.question-banner{
+    width: 95%;
+    height: 25%;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+.four-answers{
+    display: grid;
+    width: 95%;
+    height: 65%;
+    grid-template-columns: auto auto;
+    margin-left: 2.7%;
+}
+
+.three-answers{
+    display: grid;
+    width: 95%;
+    height: 65%;
+    margin-left: 2.7%;
+    grid-template-columns: auto;
+}
+
+
+.answer input{
+    height: 33vh;
+    opacity: 0;
+    cursor: pointer;
+    position: absolute;
+}
+
+.answer label{
+    width: 95%;
+    height: 95%;
+    background-color: #474554;
+    border-radius: 10px;
+    text-align: left;
+    text-transform: uppercase;
+    font-family: 'Anton', sans-serif;
+    font-size: 60px;
+    transition: 0.4s;
+
+}
+.answer input:checked + label{
+    background-color:  #0077b6;
+}
+
+.answer input:hover + label{
+    width: 100%;
+    height: 99%;
 }

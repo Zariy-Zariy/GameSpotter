@@ -107,5 +107,4 @@ def refresh():
 @app.route("/quiz")
 @login_required
 def quiz():
-    
-    return render_template(None)
+    return render_template("quiz.html")
