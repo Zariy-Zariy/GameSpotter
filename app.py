@@ -73,24 +73,24 @@ def refresh():
     response = response.json()["response"]
 
     for game in response["games"]:
-        game_info = requests.get(f"https://store.steampowered.com/api/appdetails?appids={game['appid']}")
-        game_info = game_info.json()
-        game_info = game_info[str(game["appid"])]["data"]
 
         game_exist = cur.execute("SELECT * FROM games WHERE id = ?", [game["appid"]])
         game_exist = game_exist.fetchone()
 
-        if "metacritic" not in game_info:
-            game_info.update({"metacritic": {"score": None}})
-
         if game_exist is None:
+            game_info = requests.get(f"https://store.steampowered.com/api/appdetails?appids={game['appid']}&l=english")
+            game_info = game_info.json()
+            game_info = game_info[str(game["appid"])]["data"]
+
+            if "metacritic" not in game_info:
+                game_info.update({"metacritic": {"score": None}})
 
             cur.execute("INSERT INTO games(id,name,img,review) VALUES(?,?,?,?)",
                         [game["appid"], game_info["name"], game_info["header_image"], game_info["metacritic"]["score"]])
             db.commit()
             # Link the genre
             for genre in game_info["genres"]:
-                print(genre["description"])
+                print("test :)")
 
 
         # Link the game to the user

@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", function() {
-    // Make the button go blue when it's selected
     let questions = document.querySelectorAll(".question");
 
     for (let i = 0; i < questions.length; i++){
@@ -9,7 +8,7 @@ document.addEventListener("DOMContentLoaded", function() {
     
         for(let j = 0; j < inputs_answer.length; j++){
             inputs_answer[j].addEventListener("change", function(){
-    
+                // Make the button go blue when it's selected
                 if(last_selected != undefined){
                     last_selected.parentElement.style.backgroundColor = "#474554";
                 }
@@ -17,6 +16,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 inputs_answer[j].parentElement.style.backgroundColor = "#3c28bd";
                 last_selected = inputs_answer[j];
 
+                // Make the page scroll automatically into the next question
                 if (i + 1 < questions.length){
                     questions[i + 1].scrollIntoView();
                 }
