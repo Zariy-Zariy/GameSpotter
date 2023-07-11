@@ -10,6 +10,7 @@ app = Flask(__name__)
 # Configure session to use filesystem (instead of signed cookies) - from problem set 9 (Finance)
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
+
 Session(app)
 
 db = sqlite3.connect("database.db", check_same_thread=False)
@@ -28,7 +29,8 @@ def login_required(f):
 def login():
     session.clear()
     # Helped myself with https://stackoverflow.com/questions/53573820/steam-openid-signature-validation to get the api url
-    steam_url = "https://steamcommunity.com/openid/login?openid.ns=http://specs.openid.net/auth/2.0&openid.mode=checkid_setup&openid.claimed_id=http://specs.openid.net/auth/2.0/identifier_select&openid.identity=http://specs.openid.net/auth/2.0/identifier_select&openid.return_to=http://127.0.0.1:5000/connect&openid.realm=http://127.0.0.1:5000"
+    steam_url = f"https://steamcommunity.com/openid/login?openid.ns=http://specs.openid.net/auth/2.0&openid.mode=checkid_setup&openid.claimed_id=http://specs.openid.net/auth/2.0/identifier_select&openid.identity=http://specs.openid.net/auth/2.0/identifier_select&openid.return_to=http://{request.headers.get('Host')}/connect&openid.realm=http://{request.headers.get('Host')}"
+    print(steam_url)
     return render_template("login.html", steam_url=steam_url)
 
 @app.route("/logout")
@@ -108,3 +110,6 @@ def refresh():
 @login_required
 def quiz():
     return render_template("quiz.html")
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=5000, debug=True)

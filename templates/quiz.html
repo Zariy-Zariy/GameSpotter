@@ -7,25 +7,41 @@
 {%block body%}
 <form method="post">
     <div class="question">
+        <img src="./static/banners/gaming-experience.jpg" alt="Image of a person playing a generic video game" class="question-banner">
+        <h1 class="question-title">What kind of gaming experience do you want to have</h1>
+        <div class="answers-grid">
+            <div class="answer">
+                <input type="radio" name="gaming_experience" value="Casual">
+                <label for="gaming_experience">Casual</label>
+            </div>
+
+            <div class="answer">
+                <input type="radio" name="gaming_experience" value="Intensive">
+                <label for="gaming_experience">Intensive</label>
+            </div>
+        </div>
+    </div>
+
+    <div class="question">
         <img src="./static/banners/gaming-level.jpg" alt="Image of a person holding a white PS4 controller" class="question-banner">
         <h1 class="question-title">What's your gaming level</h1>
         <div class="answers-grid">
-            <div class="answer-grid">
+            <div class="answer">
                 <input type="radio" name="gaming_level" value="Roockie">
                 <label for="gaming_level">Roockie</label>
             </div>
 
-            <div class="answer-grid">
+            <div class="answer">
                 <input type="radio" name="gaming_level" value="Below Average">
                 <label for="gaming_level">Below Average</label>
             </div>
 
-            <div class="answer-grid">
+            <div class="answer">
                 <input type="radio" name="gaming_level" value="Average">
                 <label for="gaming_level">Average</label>
             </div>
 
-            <div class="answer-grid">
+            <div class="answer">
                 <input type="radio" name="gaming_level" value="Expert">
                 <label for="gaming_level">Expert</label>
             </div>
@@ -35,22 +51,65 @@
     <div class="question">
         <img src="https://hips.hearstapps.com/hmg-prod/images/paint-colours-devalue-home-1634716638.jpg" alt="COLOOR" class="question-banner">
         <h1 class="question-title">How many hours do you want to play ? (each day)</h1>
-        <div class="three-answers">
+        <div class="answers-linear">
+
             <div class="answer">
                 <input type="radio" name="playtime" value="1-2 hours">
                     <label for="playtime">1-2 hours</label>
             </div>
+
             <div class="answer">
                 <input type="radio" name="playtime" value="3-4 hours">
                     <label for="playtime">3-4 hours</label>
             </div>
+
             <div class="answer">
                 <input type="radio" name="playtime" value="5+ hours">
                     <label for="playtime">5+ hours</label>
             </div>
+            
         </div>
     </div>
-    
+    <div class="question">
+        <img src="./static/banners/gaming-experience.jpg" alt="Image of a person playing a generic video game" class="question-banner">
+        <h1 class="question-title">Are you willing to discover indie games</h1>
+        <div class="answers-grid">
+            <div class="answer">
+                <input type="radio" name="indie" value="Yes">
+                <label for="indie">Yea why not !</label>
+            </div>
+
+            <div class="answer">
+                <input type="radio" name="indie" value="No">
+                <label for="indie">No, it's not really my thing</label>
+            </div>
+        </div>
+    </div>
+    <div class="question">
+        <img src="./static/banners/gaming-experience.jpg" alt="Image of a person playing a generic video game" class="question-banner">
+        <h1 class="question-title">Select a game from this list that you prefer</h1>
+        <div class="answers-grid">
+            <div class="answer">
+                <input type="radio" name="favorite_game" value="Minecraft">
+                <label for="favorite_game">Minecraft</label>
+            </div>
+
+            <div class="answer">
+                <input type="radio" name="favorite_game" value="Doom">
+                <label for="favorite_game">Doom</label>
+            </div>
+
+            <div class="answer">
+                <input type="radio" name="favorite_game" value="Overwatch">
+                <label for="favorite_game">Overwatch</label>
+            </div>
+
+            <div class="answer">
+                <input type="radio" name="favorite_game" value="Roller coaster tycoon">
+                <label for="favorite_game">Roller coaster tycoon</label>
+            </div>
+        </div>
+    </div>
 </form>
 
 {%endblock%}
