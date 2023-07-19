@@ -4,6 +4,7 @@ from functools import wraps
 import requests
 import constant
 import sqlite3
+import time
 
 app = Flask(__name__)
 
@@ -90,7 +91,12 @@ def refresh():
             db.commit()
             # Link the genre
             for genre in game_info["genres"]:
-                print("test :)")
+                genre_exist = cur.execute("SELECT * FROM genres WHERE game_id = ? AND genre = ?", [game["appid"], genre["description"]])
+                genre_exist = genre_exist.fetchone()
+
+                if genre_exist is None:
+                    cur.execute("INSERT INTO genres(game_id, genre) VALUES(?, ?)", [game["appid"], genre["description"]])
+                    db.commit()
 
 
         # Link the game to the user
@@ -103,12 +109,131 @@ def refresh():
                         [session["steam_id"], game["appid"]])
             db.commit()
 
+        cur.execute("UPDATE user_library SET playtime = ?, time_last_played = ? WHERE user_id = ? AND game_id = ?", [game["playtime_forever"], game["rtime_last_played"], session["steam_id"], game["appid"]])
+        db.commit()
+
     return redirect("/")
 
 
-@app.route("/quiz")
+@app.route("/quiz", methods=["GET", "POST"])
 @login_required
 def quiz():
+    if request.method == "POST":
+        #Get the list of games that a user have with their genres
+        games_never_played = cur.execute("SELECT name, img, review, id FROM user_library JOIN games ON user_library.game_id = games.id WHERE user_id = ? AND playtime < 5", [session["steam_id"]])
+        games_never_played = games_never_played.fetchall()
+        for i in range(len(games_never_played)):
+            games_never_played[i] += tuple([cur.execute("SELECT genre FROM genres WHERE game_id = ?", [games_never_played[i][3]]).fetchall()])
+
+        games_played_in_past = cur.execute("SELECT * FROM user_library WHERE user_id = ? AND playtime > 5 AND time_last_played < ?", [session["steam_id"], time.time() - 63113852]) #current time minus 2 years in UNIX
+        games_played_in_past = games_played_in_past.fetchall()
+        for i in range(len(games_played_in_past)):
+            games_played_in_past[i] += tuple([cur.execute("SELECT genre FROM genres WHERE game_id = ?", [games_played_in_past[i][3]]).fetchall()])
+
+        #Non-exaustive list of steam genres
+        interested_genres = {
+            "Action" : 0,
+            "Strategy" : 0,
+            "Adventure" : 0,
+            "Indie" : 0,
+            "RPG" : 0,
+            "Casual" : 0,
+            "Simulation" : 0,
+            "Racing" : 0,
+            "Violent" : 0,
+            "Massively Multiplayer" : 0,
+            "Sports" : 0,
+            "Short" : 0
+        }
+        gaming_experience = request.form.get("gaming_experience")
+        if gaming_experience == "Casual":
+
+            interested_genres["Adventure"] += 1
+            interested_genres["Casual"] += 1
+            interested_genres["Short"] += 1
+
+        elif gaming_experience == "Intensive":
+            interested_genres["Action"] += 1
+            interested_genres["RPG"] += 1
+            interested_genres["Violent"] += 1
+            interested_genres["Massively Multiplayer"] += 1
+        
+        else:
+            return render_template("quiz.html", error="You didnt finish the quiz :(")
+
+        gaming_level = request.form.get("gaming_level")
+        if gaming_level == "Roockie":
+            interested_genres["Casual"] += 1
+            interested_genres["Short"] += 1
+
+        elif gaming_level == "Below Average":
+            interested_genres["Adventure"] += 1
+            interested_genres["Casual"] += 1
+
+        elif gaming_level == "Average":
+            interested_genres["Racing"] += 1
+            interested_genres["Simulation"] += 1
+            interested_genres["Sports"] += 1
+
+        elif gaming_level ==  "Expert":
+            interested_genres["Massively Multiplayer"] += 1
+            interested_genres["RPG"] += 1
+            interested_genres["Strategy"] += 1
+            interested_genres["Violent"] += 1
+
+        else:
+            return render_template("quiz.html", error="You didnt finish the quiz :(")
+
+        playtime = request.form.get("Playtime")
+        if playtime == "1-2 hours":
+            interested_genres["Adventure"] += 1
+            interested_genres["Short"] += 1
+            interested_genres["Casual"] += 1
+
+        elif playtime == "3-4 hours":
+            interested_genres["Racing"] += 1
+
+        elif playtime == "5+ hours":
+            interested_genres["Violent"] += 1
+            interested_genres["RPG"] += 1
+            interested_genres["Massively Multiplayer"] += 1
+        
+        else:
+            return render_template("quiz.html", error="You didnt finish the quiz :(")
+
+        indie = request.form.get("Indie")
+        if indie == "Yes":
+            interested_genres["Indie"] += 1
+        
+        elif indie != "No":
+            return render_template("quiz.html", error="You didnt finish the quiz :(")
+
+        favorite_game = request.form.get("favorite_game")
+        if favorite_game == "Minecraft":
+            interested_genres["Adventure"] += 1
+            interested_genres["Simulation"] += 1
+
+        elif favorite_game == "Doom":
+            interested_genres["Violent"] += 1
+            interested_genres["Action"] += 1
+
+        elif favorite_game == "Overwatch":
+            interested_genres["Massively Multiplayer"] += 1
+            interested_genres["Sports"] += 1
+
+        elif favorite_game == "Roller coaster tycoon":
+            interested_genres["Strategy"] += 1
+            interested_genres["Simulation"] += 1
+        
+        else:
+            return render_template("quiz.html", error="You didnt finish the quiz :(")
+
+        for genre in interested_genres:
+            interested_genres[genre] = interested_genres[genre] / sum(interested_genres.values())
+
+        print(interested_genres)  
+        return render_template("answer.html")
+    
     return render_template("quiz.html")
 
 if __name__ == "__main__":
