@@ -3,19 +3,25 @@
 {%block title%} Home {%endblock%}
 
 {%block body%}
-    <h1>Your games</h1>
-    <a class="btn btn-primary"role="button" href="/quiz">Take the quiz</a>
-    <hr>
-    <div class="games">
-    {%for game in user_library%}
-        <div class="game">
-            <img class="game-image" src="{{game[2]}}">
-            <p class="game-title">{{game[0]}}</p>
-            {%if game[3] != None%}
-                <p class="game-score">{{game[3]}} / 100</p>
-            {%endif%}
+    {%if user_library != None%}
+        <h1>Your games</h1>
+        <a class="btn btn-primary"role="button" href="/quiz">Take the quiz</a>
+        <hr>
+        <div class="games">
+        {%for game in user_library%}
+            <div class="game">
+                <img class="game-image" src="{{game[2]}}">
+                <p class="game-title">{{game[0]}}</p>
+                {%if game[3] != None%}
+                    <p class="game-score">{{game[3]}} / 100</p>
+                {%endif%}
+            </div>
+        {%endfor%}
         </div>
-    {%endfor%}
-    </div>
+    {%endif%}
+    {%if user_library == None%}
+    <p>No games where found in your steam profile <br>
+        Is your profil public ?</p>
+    {%endif%}
 
 {%endblock%}

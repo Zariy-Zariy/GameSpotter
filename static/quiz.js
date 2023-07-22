@@ -7,11 +7,11 @@ document.addEventListener("DOMContentLoaded", function() {
         let last_selected;
     
         for(let j = 0; j < inputs_answer.length; j++){
-            inputs_answer[j].addEventListener("change", function(){
+            inputs_answer[j].addEventListener("click", function(){
                 // Make the button go blue when it's selected
                 if(last_selected != undefined){
                     last_selected.parentElement.style.backgroundColor = "#474554";
-                }
+                }                                                   
     
                 inputs_answer[j].parentElement.style.backgroundColor = "#3c28bd";
                 last_selected = inputs_answer[j];
