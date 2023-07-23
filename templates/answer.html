@@ -1,0 +1,49 @@
+{%extends "layout.html"%}
+
+{%block title%} Quiz {%endblock%}
+
+{%block body%}
+    {%if games_never_played != None%}
+        <h2>Here are some game you never (or barely) played:</h1>
+        <div class="games">
+            {%for game in games_never_played%}
+                <div class="game">
+                    <img class="game-image" src="{{game['image']}}">
+                    <p class="game-title">{{game['title']}}</p>
+                    {%if game['user_match'] != None%}
+                        <p class="game-score">User match: {{(game['user_match'] * 100)|round(2)}} / 100</p>
+                    {%endif%}
+                </div>
+            {%endfor%}
+        </div>
+    {%endif%}
+    {%if games_played_in_past != None%}
+        <h2>Rediscover these games you played a lot in the past:</h1>
+        <div class="games">
+            {%for game in games_played_in_past%}
+                <div class="game">
+                    <img class="game-image" src="{{game['image']}}">
+                    <p class="game-title">{{game['title']}}</p>
+                    {%if game['user_match'] != None%}
+                        <p class="game-score">User match: {{(game['user_match'] * 100)|round(2)}} / 100</p>
+                    {%endif%}
+                </div>
+            {%endfor%}
+        </div>
+    {%endif%}
+    {%if all_games% != None%}
+        <h2>Simply continue playing these games:</h2>
+        <div class="games">
+        {%for game in all_games%}
+            <div class="game">
+                <img class="game-image" src="{{game['image']}}">
+                <p class="game-title">{{game['title']}}</p>
+                {%if game['user_match'] != None%}
+                    <p class="game-score">User match: {{(game['user_match'] * 100)|round(2)}} / 100</p>
+                {%endif%}
+            </div>
+        {%endfor%}
+        </div>
+    {%endif%}
+
+{%endblock%}
