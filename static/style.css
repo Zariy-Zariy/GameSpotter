@@ -12,7 +12,8 @@ html, body {
 
 .games{
     display: grid;
-    width: 100vw;
+    width: 95vw;
+    margin-left: 3vw;
     grid-template-columns: auto auto auto auto;
 }
 
@@ -20,6 +21,7 @@ html, body {
 .game{
     transition: 0.4s;
     width: 93%;
+    max-width: 30vw;
     border-radius: 10px;
 }
 
@@ -52,7 +54,7 @@ html, body {
 .game-score{
     text-align: center;
     position: relative;
-    width: 60px;
+    width: 90px;
     left: 70%;
     top: -19%;
 }
@@ -100,7 +102,8 @@ html, body {
 .question{
     padding-top: 5vw;
     height: 95vh;
-    width: 100vw;
+    width: 95vw;
+    margin-left: 2vw;
 }
 
 .answers-grid, .answers-linear{

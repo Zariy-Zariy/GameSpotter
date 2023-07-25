@@ -31,7 +31,7 @@
             {%endfor%}
         </div>
     {%endif%}
-    {%if all_games% != None%}
+    {%if all_games != None%}
         <h2>Simply continue playing these games:</h2>
         <div class="games">
         {%for game in all_games%}
@@ -45,5 +45,7 @@
         {%endfor%}
         </div>
     {%endif%}
-
+    {%if games_never_played == None and games_played_in_past == None and all_games == None%}
+    <p>No games where found</p>
+    {%endif%}
 {%endblock%}

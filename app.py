@@ -31,7 +31,6 @@ def login():
     session.clear()
     # Helped myself with https://stackoverflow.com/questions/53573820/steam-openid-signature-validation to get the api url
     steam_url = f"https://steamcommunity.com/openid/login?openid.ns=http://specs.openid.net/auth/2.0&openid.mode=checkid_setup&openid.claimed_id=http://specs.openid.net/auth/2.0/identifier_select&openid.identity=http://specs.openid.net/auth/2.0/identifier_select&openid.return_to=http://{request.headers.get('Host')}/connect&openid.realm=http://{request.headers.get('Host')}"
-    print(steam_url)
     return render_template("login.html", steam_url=steam_url)
 
 @app.route("/logout")
@@ -72,7 +71,6 @@ def refresh():
     # Get all the games
     response = requests.get(f"https://api.steampowered.com/IPlayerService/GetOwnedGames/v1?include_appinfo=true&include_played_free_games=true&steamid={session['steam_id']}&key={constant.STEAM_KEY}")
     response = response.json()["response"]
-    print(response)
 
     for game in response["games"]:
 
@@ -150,9 +148,11 @@ def get_recommended_games(games, interested_genres):
             games[i]["user_match"] -= 0.1
         
     # Got help from: https://stackoverflow.com/questions/7623715/deleting-list-elements-based-on-condition
-    games = filter(lambda x: x["user_match"] > 0.35, games)
+    games = filter(lambda x: x["user_match"] > 0.2, games)
+    games = list(games)
+    print(games)
+    games.sort(key=lambda x: x["user_match"], reverse=True)
     return games
-
 
 
 @app.route("/quiz", methods=["GET", "POST"])
@@ -165,7 +165,6 @@ def quiz():
         games_played_in_past = get_game_with_genres("WHERE user_id = ? AND playtime > 5 AND time_last_played < ?", [session["steam_id"], time.time() - 63113852]) #current time minus 2 years in UNIX
 
         all_games = get_game_with_genres("WHERE user_id = ? AND playtime > 5 AND time_last_played > ?", [session["steam_id"], time.time() - 63113852]) #current time minus 2 years in UNIX
-        print(all_games)
 
         #Non-exaustive list of steam genres
         interested_genres = {
@@ -195,7 +194,7 @@ def quiz():
             interested_genres["Violent"] += 1
             interested_genres["Massively Multiplayer"] += 1        
         else:
-            return render_template("quiz.html", error="You didnt finish the quiz :(")
+            return render_template("quiz.html", error="You didn't finish the quiz :(")
 
         gaming_level = request.form.get("gaming_level")
         if gaming_level == "Roockie":
@@ -219,7 +218,7 @@ def quiz():
             interested_genres["Violent"] += 1
 
         else:
-            return render_template("quiz.html", error="You didnt finish the quiz :(")
+            return render_template("quiz.html", error="You didn't finish the quiz :(")
 
         playtime = request.form.get("playtime")
         if playtime == "1-2 hours":
@@ -237,7 +236,7 @@ def quiz():
             interested_genres["Massively Multiplayer"] += 1
         
         else:
-            return render_template("quiz.html", error="You didnt finish the quiz :(")
+            return render_template("quiz.html", error="You didn't finish the quiz :(")
 
         prefered_genres = request.form.get("prefered-genres")
         if prefered_genres == "Single Player":
@@ -258,7 +257,7 @@ def quiz():
             interested_genres["RPG"] += 1
 
         else:
-           return render_template("quiz.html", error="You didnt finish the quiz :(") 
+           return render_template("quiz.html", error="You didn't finish the quiz :(") 
 
         favorite_game = request.form.get("favorite_game")
         if favorite_game == "Minecraft":
@@ -278,7 +277,7 @@ def quiz():
             interested_genres["Simulation"] += 1
         
         else:
-            return render_template("quiz.html", error="You didnt finish the quiz :(")
+            return render_template("quiz.html", error="You didn't finish the quiz :(")
 
         games_never_played = get_recommended_games(games_never_played, interested_genres)
         games_played_in_past = get_recommended_games(games_played_in_past, interested_genres)
